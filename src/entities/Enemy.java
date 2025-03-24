@@ -1,6 +1,7 @@
 package entities;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public class Enemy {
     private int x;
@@ -10,6 +11,8 @@ public class Enemy {
 
     private int speed;
     private final Image image;
+
+    private ArrayList<EnemyBullet> bullets;
 
     public Enemy(int x, int y, int width, int height, int speed, Image image) {
         this.x = x;
@@ -24,8 +27,16 @@ public class Enemy {
         this.y += this.speed;
     }
 
+    public void shoot(){
+        bullets.add(new EnemyBullet(x + width/2, y, 5, 10, 5));
+    }
+
     public void draw(Graphics g) {
+
         g.drawImage(image, x, y, width, height, null);
+        for (EnemyBullet bullet : bullets) {
+            bullet.draw(g);
+        }
     }
 
     public int getSpeed() {

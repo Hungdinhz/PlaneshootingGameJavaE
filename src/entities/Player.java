@@ -12,8 +12,8 @@ public class Player {
     private final int width;
     private final int height;
     private final Image image;
-    private int speed;
-    private ArrayList<Bullet> bullets;
+    private int speed = 30;
+    private ArrayList<Bullet> bullets = new ArrayList<>();
 
     public Player(int x, int y, int width, int height, Image image){
         this.x = x;
@@ -21,8 +21,6 @@ public class Player {
         this.width = width;
         this.height = height;
         this.image = image;
-        this.speed = 5;
-        this.bullets = new ArrayList<>();
     }
 
     public void move(int dx, int dy) {
@@ -32,15 +30,15 @@ public class Player {
 
     // Phương thức bắn đạn
     public void shoot() {
-        bullets.add(new Bullet(x + width / 2, y, 5, 10, 10)); // Thêm viên đạn mới
+        bullets.add(new Bullet(x + width / 2, y, 5, 10, 20)); // Thêm viên đạn mới
     }
 
     // Phương thức vẽ người chơi và đạn lên màn hình
     public void draw(Graphics g) {
         g.drawImage(image, x, y, width, height, null);
-        for (Bullet bullet : bullets) {
+        /*for (Bullet bullet : bullets) {
             bullet.draw(g);
-        }
+        }*/
     }
 
     // Cập nhật vị trí của đạn (để đạn di chuyển)
