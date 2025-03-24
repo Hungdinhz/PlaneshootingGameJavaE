@@ -1,5 +1,6 @@
 package graphics;
-
+import java.awt.Graphics;
+import java.awt.Image;
 // Xử lí nền game
 public class Background {
     private Image image;

@@ -1,5 +1,7 @@
 package graphics;
 
+import java.awt.*;
+
 //Hiệu ứng nổ
 public class Explosion {
     private int x, y;
