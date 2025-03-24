@@ -1,7 +1,6 @@
 package main;
 
-import javax.swing.*;
-
+// Chạy game
 public class App {
     public static void main(String[] args) {
         //new GamePanel();

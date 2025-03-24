@@ -14,4 +14,3 @@ public class Background {
         g.drawImage(backgroundImage, 0, 0, width, height, null);
     }
 }
-
