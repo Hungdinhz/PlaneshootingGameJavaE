@@ -1,14 +1,18 @@
 package entities;
 
+import main.GameManager;
+
+import javax.swing.*;
 import java.awt.*;
 
 // Đạn của địch
 public class EnemyBullet {
-    private int x, y;
+    private double x, y;
     private int width, height;
-    private int speed;
+    private final Image image = new ImageIcon("assets/images/bullet2.png").getImage();
+    private double speed;
 
-    public EnemyBullet(int x, int y, int width, int height, int speed){
+    public EnemyBullet(double x, double y, int width, int height, double speed) {
         this.x = x;
         this.y = y;
         this.width = width;
@@ -16,13 +20,20 @@ public class EnemyBullet {
         this.speed = speed;
     }
 
-    public void move(){
+    public void move() {
         this.y += speed;
     }
 
-    public void draw(Graphics g){
-        g.setColor(Color.yellow);
-        g.fillRect(x, y, width, height);
+    public void draw(Graphics g) {
+        g.drawImage(image, (int)this.x, (int)this.y, this.width, this.height, null);
+    }
+
+    public boolean isOutOfScreen() {
+        return y > GameManager.getHeight(); // Kiểm tra nếu đạn ra khỏi màn hình
+    }
+
+    public Rectangle getBounds(){
+        return new Rectangle((int)x, (int)y, width, height);
     }
 
     public int getHeight() {
@@ -41,28 +52,27 @@ public class EnemyBullet {
         this.width = width;
     }
 
-    public int getY() {
+    public double getY() {
         return y;
     }
 
-    public void setY(int y) {
+    public void setY(double y) {
         this.y = y;
     }
 
-    public int getX() {
+    public double getX() {
         return x;
     }
 
-    public void setX(int x) {
+    public void setX(double x) {
         this.x = x;
     }
 
-    public int getSpeed() {
+    public double getSpeed() {
         return speed;
     }
 
-    public void setSpeed(int speed) {
+    public void setSpeed(double speed) {
         this.speed = speed;
     }
 }
-
