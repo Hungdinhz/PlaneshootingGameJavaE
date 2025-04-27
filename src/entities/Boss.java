@@ -1,11 +1,12 @@
 package entities;
 
 import base.Plane;
+
 import java.awt.*;
 
-public class Enemy extends Plane {
+public class Boss extends Plane {
 
-    public Enemy(double x, double y, int width, int height, double speed, Image image, int hp) {
+    public Boss(double x, double y, int width, int height, double speed, Image image, int hp) {
         super(x, y, width, height, speed, image, hp);
     }
 
@@ -24,11 +25,11 @@ public class Enemy extends Plane {
 
     @Override
     public void draw(Graphics g) {
-        g.drawImage(getImage(), (int) getX(), (int) getY(), getWidth(), getHeight(), null);
+        g.drawImage(getImage(), (int)getX(), (int)getY(), getWidth(), getHeight(), null);
     }
 
-    public EnemyBullet shoot(int widthB, int heightB, double speedB, Image imageB) {
-        return new EnemyBullet(getX() + (double) getWidth() / 2 - 10, getY() + getHeight(), widthB, heightB, speedB, imageB);
+    public BossBullet shoot(double x, double y, int widthB, int heightB, double speedB, Image imageB) {
+        return new BossBullet(x, y, widthB, heightB, speedB, imageB);
     }
 
 }

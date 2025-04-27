@@ -4,16 +4,15 @@ import base.Bullet;
 
 import javax.swing.*;
 import java.awt.*;
-import main.GameManager;
 
-public class EnemyBullet extends Bullet {
-    public EnemyBullet(double x, double y, int width, int height, double speed, Image image) {
+public class PlayerBullet extends Bullet {
+    public PlayerBullet(double x, double y, int width, int height, double speed, Image image) {
         super(x, y, width, height, speed, image);
     }
 
     @Override
     public void update(double delta) {
-        setY(getY() + getSpeed());
+        setY(getY() - getSpeed());
     }
 
     @Override
@@ -22,6 +21,6 @@ public class EnemyBullet extends Bullet {
     }
 
     public boolean isOutOfScreen() {
-        return getY() > GameManager.getHeight();
+        return getY() + getHeight() < 0;
     }
 }

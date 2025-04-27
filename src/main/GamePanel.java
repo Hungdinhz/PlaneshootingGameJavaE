@@ -54,7 +54,7 @@ public class GamePanel extends JPanel implements Runnable{
     @Override
     public void run() {
         long lastTime = System.nanoTime();
-        while(!gm.isGameOver()){
+        while(!gm.isGameOver() && !gm.isChekcWin()){
             long now = System.nanoTime();
             double deltaTime = (now - lastTime) / 1_000_000_000.0; // Chuyển sang giây
             lastTime = now;

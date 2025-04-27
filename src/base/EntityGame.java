@@ -1,41 +1,20 @@
-package entities;
+package base;
 
-import javax.swing.*;
 import java.awt.*;
 
-// Đạn của người chơi
-public class Bullet {
+public abstract class EntityGame implements Renderable, Updatable {
     private double x, y;
     private int width, height;
-    private final Image image = new ImageIcon("assets/images/bullet1.png").getImage();
-    private double speed; // Tốc độ đạn
+    private double speed;
+    private Image image;
 
-    public Bullet(double x, double y, int width, int height, double speed) {
+    public EntityGame(double x, double y, int width, int height, double speed, Image image) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
         this.speed = speed;
-    }
-
-    public void move() {
-        this.y -= speed; // Đạn bay lên
-    }
-
-    public void updateMovement(){
-
-    }
-
-    public void draw(Graphics g) {
-        g.drawImage(image, (int) x, (int) y, width, height, null);
-    }
-
-    public boolean isOutOfScreen() {
-        return y + height < 0; // Kiểm tra nếu đạn ra khỏi màn hình
-    }
-
-    public Rectangle getBounds(){
-        return new Rectangle((int)x, (int)y, width, height);
+        this.image = image;
     }
 
     public double getX() {
@@ -78,4 +57,16 @@ public class Bullet {
         this.speed = speed;
     }
 
+    public void setImage(Image image){
+        this.image = image;
+    }
+
+    public Image getImage() {
+        return image;
+    }
+
+    // Phương thức getBounds không thay đổi
+    public Rectangle getBounds() {
+        return new Rectangle((int) x, (int) y, width, height);
+    }
 }
