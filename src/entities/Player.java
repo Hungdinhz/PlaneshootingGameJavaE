@@ -1,5 +1,6 @@
 package entities;
 
+import base.Bullet;
 import base.Plane;
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -36,8 +37,8 @@ public class Player extends Plane {
         g.drawImage(getImage(), (int) getX(), (int) getY(), getWidth(), getHeight(), null);
     }
 
-    public PlayerBullet shoot(int widthB, int heightB, double speedB, Image imageB) {
-        return new PlayerBullet(getX() + (double) getWidth() / 2 - 5, getY(), widthB, heightB, speedB, imageB);
+    public Bullet shoot(int widthB, int heightB, double speedB, Image imageB, int dame) {
+        return new PlayerBullet(getX() + (double) getWidth() / 2 - 5, getY(), widthB, heightB, speedB, imageB, dame);
     }
 
     public void keyPressed(KeyEvent e) {

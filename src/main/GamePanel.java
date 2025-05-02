@@ -3,12 +3,9 @@ package main;
 /*
     Vẽ nền, máy bay địch, máy bay người chơi, đạn bắn ra
  */
-import entities.Enemy;
-import entities.Player;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 
 public class GamePanel extends JPanel implements Runnable{
     //Game loop
@@ -54,19 +51,24 @@ public class GamePanel extends JPanel implements Runnable{
     @Override
     public void run() {
         long lastTime = System.nanoTime();
-        while(!gm.isGameOver() && !gm.isChekcWin()){
+        while (true) {
             long now = System.nanoTime();
-            double deltaTime = (now - lastTime) / 1_000_000_000.0; // Chuyển sang giây
+            double deltaTime = (now - lastTime) / 1_000_000_000.0;
             lastTime = now;
 
-            gm.update(deltaTime);
+            if (!gm.isGameOver() && !gm.isCheckWin()) {
+                gm.update(deltaTime); // chỉ update khi chưa win/thua
+            }
+
             repaint();
+
             try {
-                Thread.sleep(1000/60);
+                Thread.sleep(1000 / 60); // 60 FPS
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
     }
+
 
 }

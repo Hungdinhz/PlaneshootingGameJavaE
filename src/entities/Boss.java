@@ -1,5 +1,6 @@
 package entities;
 
+import base.Bullet;
 import base.Plane;
 
 import java.awt.*;
@@ -28,8 +29,12 @@ public class Boss extends Plane {
         g.drawImage(getImage(), (int)getX(), (int)getY(), getWidth(), getHeight(), null);
     }
 
-    public BossBullet shoot(double x, double y, int widthB, int heightB, double speedB, Image imageB) {
-        return new BossBullet(x, y, widthB, heightB, speedB, imageB);
+    public Bullet shootHoming(double x, double y, int widthB, int heightB, double speedB, Image imageB, int dame) {
+        return new HomingBullet(x, y, widthB, heightB, speedB, imageB, dame);
+    }
+
+    public Bullet shootNormal(double x, double y, int widthB, int heightB, double speedB, Image imageB, int dame) {
+        return new EnemyBullet(x, y, widthB, heightB, speedB, imageB, dame);
     }
 
 }

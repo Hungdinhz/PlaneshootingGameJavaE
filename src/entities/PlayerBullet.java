@@ -6,12 +6,13 @@ import javax.swing.*;
 import java.awt.*;
 
 public class PlayerBullet extends Bullet {
-    public PlayerBullet(double x, double y, int width, int height, double speed, Image image) {
-        super(x, y, width, height, speed, image);
+    public PlayerBullet(double x, double y, int width, int height, double speed, Image image, int dame) {
+        super(x, y, width, height, speed, image, dame);
     }
 
     @Override
     public void update(double delta) {
+        setX(getX() + getDx());
         setY(getY() - getSpeed());
     }
 

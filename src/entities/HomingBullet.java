@@ -2,13 +2,12 @@ package entities;
 
 import base.Bullet;
 import main.GameManager;
-
 import java.awt.*;
 
-public class BossBullet extends Bullet {
+public class HomingBullet extends Bullet {
 
-    public BossBullet(double x, double y, int width, int height, double speed, Image image) {
-        super(x, y, width, height, speed / 2, image);
+    public HomingBullet(double x, double y, int width, int height, double speed, Image image, int damage) {
+        super(x, y, width, height, speed / 2, image, damage);  // Gọi constructor của Bullet với damage
     }
 
     @Override
@@ -16,14 +15,12 @@ public class BossBullet extends Bullet {
         setY(getY() + getSpeed());
     }
 
-    public void update(Player player, double delta){
+    public void update(Player player, double delta) {
         double px = player.getX();
-
-        double dx = (px - getX())* delta;
+        double dx = (px - getX()) * delta;
 
         setX(getX() + dx);
-
-        setY(getY() + getSpeed());
+        update(delta);
     }
 
     @Override

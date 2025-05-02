@@ -1,5 +1,6 @@
 package main;
 
+import base.Bullet;
 import entities.*;
 
 import javax.swing.*;
@@ -34,6 +35,7 @@ public class GameManager implements KeyListener {
     private int hpPlayer = 5;
 
 
+
     // Enemy
     private ArrayList<Enemy> enemys = new ArrayList<>();
     private int enemyWidth = 60;
@@ -57,21 +59,22 @@ public class GameManager implements KeyListener {
     private int hpBoss = 100;
 
     // Bullet Player
-    private ArrayList<PlayerBullet> playerBullets = new ArrayList<>();
+    private ArrayList<Bullet> playerBullets = new ArrayList<>();
     private int widthBulletPlayer = 15;
     private int heightBulletPlayer = 40;
     private double speedBulletPlayer = 15;
     private Image imgBulletPlayer =  new ImageIcon("assets/images/bullet1.png").getImage();
 
     //Bullet Enemy
-    private ArrayList<EnemyBullet> enemyBullets = new ArrayList<>();
+    private ArrayList<Bullet> enemyBullets = new ArrayList<>();
     private int widthBulletEnemy = 20;
     private int heightBulletEnemy = 20;
     private double speedBulletEnemy = 5;
     private Image imgBulletEnemy =  new ImageIcon("assets/images/bullet2.png").getImage();
 
     // Bullet Boss
-    private ArrayList<BossBullet> bossBullets = new ArrayList<>();
+    //private ArrayList<EnemyBullet> bossBullets = new ArrayList<>();
+    private ArrayList<Bullet> bossBullets = new ArrayList<>();
     private int widthBulletboss = 20;
     private int heightBulletboss = 20;
     private double speedBulletboss = 8;
@@ -84,7 +87,7 @@ public class GameManager implements KeyListener {
 
     // Timer
     private double bulletTimerPlayer = 0;
-    private double timePerShoot = 0.2;
+    private double timePerShoot = 0.3;
 
     private double timeCreateEnemy = 1.5;
     private double timerEnemy = 0;
@@ -93,7 +96,7 @@ public class GameManager implements KeyListener {
     private double timePerShootE = 4.5;
 
     private double bulletTimerboss = 0;
-    private double timePerShootBoss = 0.5;
+    private double timePerShootBoss = 1;
 
     // Count
     private int enemyKilledCount = 0;
@@ -141,18 +144,18 @@ public class GameManager implements KeyListener {
             boss.draw(g);
 
             // draw bullet's enemy
-            for (BossBullet bossBullet : bossBullets) {
-                bossBullet.draw(g);
+            for (Bullet bullet : bossBullets) {
+                bullet.draw(g);
             }
         }
 
         // draw bullet's player
-        for (PlayerBullet playerBullet : playerBullets) {
+        for (Bullet playerBullet : playerBullets) {
             playerBullet.draw(g);
         }
 
         // draw bullet's enemy
-        for (EnemyBullet enemyBullet : enemyBullets) {
+        for (Bullet enemyBullet : enemyBullets) {
             enemyBullet.draw(g);
         }
 
@@ -160,10 +163,14 @@ public class GameManager implements KeyListener {
             g.setColor(Color.red);
             g.setFont(new Font("Arial", Font.BOLD, 50));
             g.drawString("GAME OVER! SCORE = " + score, 0, HEIGHT / 2);
+            g.setFont(new Font("Arial", Font.PLAIN, 25));
+            g.drawString("Press R to Restart", 200, HEIGHT / 2 + 40);
         } else if(checkWin){
             g.setColor(Color.red);
             g.setFont(new Font("Arial", Font.BOLD, 50));
             g.drawString("YOU WINNN! SCORE = " + score, 0, HEIGHT / 2);
+            g.setFont(new Font("Arial", Font.PLAIN, 25));
+            g.drawString("Press R to Restart", 200, HEIGHT / 2 + 40);
         }else {
             g.setColor(Color.RED);
             g.setFont(new Font("Arial", Font.BOLD, 20));
@@ -193,7 +200,7 @@ public class GameManager implements KeyListener {
         bulletTimerPlayer += delta;
         if(bulletTimerPlayer >= timePerShoot){
             bulletTimerPlayer = 0;
-            playerBullets.add(player.shoot(widthBulletPlayer, heightBulletPlayer, speedBulletPlayer, imgBulletPlayer));
+            playerBullets.add(player.shoot(widthBulletPlayer, heightBulletPlayer, speedBulletPlayer, imgBulletPlayer, damagePlayer));
         }
 
         // tao dich sau 1s
@@ -210,7 +217,7 @@ public class GameManager implements KeyListener {
         if(bulletTimerEnemy >= timePerShootE){
             bulletTimerEnemy = 0;
             for (Enemy enemy : enemys) {
-                enemyBullets.add(enemy.shoot(widthBulletEnemy, heightBulletEnemy, speedBulletEnemy, imgBulletEnemy));
+                enemyBullets.add(enemy.shoot(widthBulletEnemy, heightBulletEnemy, speedBulletEnemy, imgBulletEnemy, damageEnemy));
             }
         }
 
@@ -219,9 +226,9 @@ public class GameManager implements KeyListener {
             bulletTimerboss += delta;
             if (bulletTimerboss >= timePerShootBoss) {
                 bulletTimerboss = 0;
-                bossBullets.add(boss.shoot(boss.getX() + boss.getWidth() / 2 - widthBulletboss / 2, boss.getY() + boss.getHeight(), widthBulletboss, heightBulletboss, speedBulletboss, imgBulletboss)); // dan o giua
-                bossBullets.add(boss.shoot(boss.getX() - widthBulletboss / 2, boss.getY() + boss.getHeight(), widthBulletboss, heightBulletboss, speedBulletboss, imgBulletboss)); // dan ben trai
-                bossBullets.add(boss.shoot(boss.getX() + boss.getWidth() - widthBulletboss / 2, boss.getY() + boss.getHeight(), widthBulletboss, heightBulletboss, speedBulletboss, imgBulletboss)); // dan ben phai
+                bossBullets.add(boss.shootNormal(boss.getX() + boss.getWidth() / 2 - widthBulletboss / 2, boss.getY() + boss.getHeight(), widthBulletboss, heightBulletboss, speedBulletboss, imgBulletboss, damageBoss)); // dan o giua
+                bossBullets.add(boss.shootHoming(boss.getX() - widthBulletboss / 2, boss.getY() + boss.getHeight(), widthBulletboss, heightBulletboss, speedBulletboss, imgBulletboss, damageBoss)); // dan ben trai
+                bossBullets.add(boss.shootHoming(boss.getX() + boss.getWidth() - widthBulletboss / 2, boss.getY() + boss.getHeight(), widthBulletboss, heightBulletboss, speedBulletboss, imgBulletboss,damageBoss)); // dan ben phai
             }
         }
 
@@ -235,35 +242,57 @@ public class GameManager implements KeyListener {
         }
 
         for (int i = 0; i < enemyBullets.size(); i++) {
-            enemyBullets.get(i).update(delta);
-            if (enemyBullets.get(i).isOutOfScreen()) {
+            Bullet bullet = enemyBullets.get(i);
+            // Kiểm tra và sử dụng pattern variable
+            if (bullet instanceof HomingBullet homingBullet) {
+                // Nếu đạn là HomingBullet, cập nhật theo player
+                homingBullet.update(player, delta);  // Truyền player vào để đạn đuổi theo player
+            } else {
+                // Đối với các loại đạn khác, gọi phương thức update chung
+                bullet.update(delta);  // Phương thức update chung
+            }
+
+            // Kiểm tra nếu đạn ra ngoài màn hình
+            if (bullet.isOutOfScreen()) {
                 enemyBullets.remove(i);
                 i--;
             }
         }
 
-        for (int i = 0; i < bossBullets.size(); i++) {
-            bossBullets.get(i).update(player, delta);
-            if (bossBullets.get(i).isOutOfScreen()) {
+        for (int i = bossBullets.size() - 1; i >= 0; i--) {
+            Bullet bullet = bossBullets.get(i);
+
+            // Kiểm tra và sử dụng pattern variable
+            if (bullet instanceof HomingBullet homingBullet) {
+                // Nếu đạn là HomingBullet, cập nhật theo player
+                homingBullet.update(player, delta);  // Truyền player vào để đạn đuổi theo player
+            } else {
+                // Đối với các loại đạn khác, gọi phương thức update chung
+                bullet.update(delta);  // Phương thức update chung
+            }
+
+            // Kiểm tra nếu đạn ra ngoài màn hình
+            if (bullet.isOutOfScreen()) {
                 bossBullets.remove(i);
-                i--;
             }
         }
+
+
 
     }
 
     // Kiểm tra va chạm
     public void checkCollisions(){
         //Kiểm tra đạn của player va chạm với kẻ địch
-        Iterator<PlayerBullet> bulletIterator = playerBullets.iterator();
-        while (bulletIterator.hasNext()) {
-            PlayerBullet playerBullet = bulletIterator.next();
+        Iterator<Bullet> bulletPlayer = playerBullets.iterator();
+        while (bulletPlayer.hasNext()) {
+            Bullet playerBullet = bulletPlayer.next();
             Iterator<Enemy> enemyIterator = enemys.iterator();
             while (enemyIterator.hasNext()) {
                 Enemy e = enemyIterator.next();
                 if (playerBullet.getBounds().intersects(e.getBounds())) {
-                    e.takeDamage(damagePlayer); // Gây sát thương cho kẻ địch
-                    bulletIterator.remove(); // Xóa viên đạn an toàn
+                    e.takeDamage(playerBullet.getDamage()); // Gây sát thương cho kẻ địch
+                    bulletPlayer.remove(); // Xóa viên đạn an toàn
 
                     if (e.isDead()) { // Nếu kẻ địch chết
                         enemyIterator.remove(); // ✅ Xóa kẻ địch an toàn
@@ -294,11 +323,11 @@ public class GameManager implements KeyListener {
 
         // Kiểm tra đạn của enemy va chạm với plauer
         for (Enemy e : enemys) {
-            Iterator<EnemyBullet> bulletEIterator = enemyBullets.iterator();
+            Iterator<Bullet> bulletEIterator = enemyBullets.iterator();
             while (bulletEIterator.hasNext()) {
-                EnemyBullet eb = bulletEIterator.next();
+                Bullet eb = bulletEIterator.next();
                 if (eb.getBounds().intersects(player.getBounds())) {
-                    player.takeDamage(damageEnemy);
+                    player.takeDamage(eb.getDamage());
                     bulletEIterator.remove();
                     if(player.isDead()){
                         gameOver = true;
@@ -310,11 +339,11 @@ public class GameManager implements KeyListener {
 
         if(bossAppeared) {
             //  Kiểm tra đạn của player va chạm với boss
-            Iterator<PlayerBullet> bulletP = playerBullets.iterator();
+            Iterator<Bullet> bulletP = playerBullets.iterator();
             while (bulletP.hasNext()) {
-                PlayerBullet pb = bulletP.next();
+                Bullet pb = bulletP.next();
                 if (pb.getBounds().intersects(boss.getBounds())) {
-                    boss.takeDamage(damagePlayer);
+                    boss.takeDamage(pb.getDamage());
                     bulletP.remove();
                     if (boss.isDead()) {
                         checkWin = true;
@@ -324,11 +353,11 @@ public class GameManager implements KeyListener {
             }
 
             //Kiểm tra đạn của boss va chạm với player
-            Iterator<BossBullet> bulletB = bossBullets.iterator();
+            Iterator<Bullet> bulletB = bossBullets.iterator();
             while (bulletB.hasNext()) {
-                BossBullet bb = bulletB.next();
+                Bullet bb = bulletB.next();
                 if (bb.getBounds().intersects(player.getBounds())) {
-                    player.takeDamage(damageBoss);
+                    player.takeDamage(bb.getDamage());
                     bulletB.remove();
                     if (player.isDead()) {
                         gameOver = true;
@@ -352,9 +381,48 @@ public class GameManager implements KeyListener {
 
     }
 
+    public void resetGame() {
+        checkWin = false;
+        gameOver = false;
+        score = 0;
+
+        // Reset player
+        player.setX(playerX);
+        player.setY(playerY);
+        player.setHp(hpPlayer);
+
+        // Clear mọi đối tượng
+        enemys.clear();
+        playerBullets.clear();
+        enemyBullets.clear();
+        bossBullets.clear();
+
+        // Reset boss
+        bossAppeared = false;
+        enemyKilledCount = 0;
+        boss = null;
+
+        // Reset timer
+        bulletTimerPlayer = 0;
+        timerEnemy = 0;
+        bulletTimerEnemy = 0;
+        bulletTimerboss = 0;
+    }
+
+
     @Override
     public void keyPressed(KeyEvent e) {
         player.keyPressed(e);
+        if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+            // Bắn 3 viên đạn cùng lúc
+            MultiBullet multiBullet = new MultiBullet(player.getX(), player.getY(), widthBulletPlayer , heightBulletPlayer, speedBulletPlayer, imgBulletPlayer,  damagePlayer, 4);
+            playerBullets.addAll(multiBullet.getBullets());
+        }
+        // Thêm reset game bằng phím R
+        if ((checkWin || gameOver) && e.getKeyCode() == KeyEvent.VK_R) {
+            resetGame();
+           //start();
+        }
     }
 
     @Override
@@ -382,7 +450,7 @@ public class GameManager implements KeyListener {
         this.gameOver = gameOver;
     }
 
-    public boolean isChekcWin() {
+    public boolean isCheckWin() {
         return checkWin;
     }
 

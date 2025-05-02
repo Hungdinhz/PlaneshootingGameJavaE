@@ -7,8 +7,8 @@ import java.awt.*;
 import main.GameManager;
 
 public class EnemyBullet extends Bullet {
-    public EnemyBullet(double x, double y, int width, int height, double speed, Image image) {
-        super(x, y, width, height, speed, image);
+    public EnemyBullet(double x, double y, int width, int height, double speed, Image image, int dame) {
+        super(x, y, width, height, speed, image, dame);
     }
 
     @Override
