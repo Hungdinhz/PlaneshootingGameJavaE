@@ -9,6 +9,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Objects;
 
 public class GameManager implements KeyListener {
 
@@ -20,9 +21,10 @@ public class GameManager implements KeyListener {
     private GamePanel gamePanel;
     private graphics.Background background;
 
+    // Background
     private static final int WIDTH = 700;
     private static final int HEIGHT = 800;
-    private String bgPath = "assets/images/background.jpg";
+    private String bgPath = "/assets/images/background.jpg";
 
     // Player
     private Player player;
@@ -30,11 +32,9 @@ public class GameManager implements KeyListener {
     private int playerHeight = 46;
     private double playerX = WIDTH / 2 - playerWidth / 2;
     private double playerY = HEIGHT - 100;
-    private Image imagePlayer = new ImageIcon("assets/images/plane1.png").getImage();
+    private Image imagePlayer = new ImageIcon(Objects.requireNonNull(getClass().getResource("/assets/images/plane1.png"))).getImage();
     private double speedPlayer = 500;
     private int hpPlayer = 5;
-
-
 
     // Enemy
     private ArrayList<Enemy> enemys = new ArrayList<>();
@@ -42,7 +42,7 @@ public class GameManager implements KeyListener {
     private int enemyHeight = 60;
     private double enemyX;
     private double enemyY = 0;
-    private Image imageEnemy = new ImageIcon("assets/images/enemy1.png").getImage();
+    private Image imageEnemy = new ImageIcon(Objects.requireNonNull(getClass().getResource("/assets/images/enemy1.png"))).getImage();
     private double speedEnemy = 35;
     private int hpEnemy = 3;
 
@@ -53,8 +53,8 @@ public class GameManager implements KeyListener {
     private int bossWidth = WIDTH * 6 / 10;
     private int bossHeight = bossWidth * 8 / 10;
     private double bossX;
-    private double bossY = - bossHeight;
-    private Image imageBoss = new ImageIcon("assets/images/enemy1.png").getImage();
+    private double bossY = -bossHeight;
+    private Image imageBoss = new ImageIcon(Objects.requireNonNull(getClass().getResource("/assets/images/enemy1.png"))).getImage(); // nên đổi hình nếu khác enemy thường
     private double speedBoss = 30;
     private int hpBoss = 100;
 
@@ -63,23 +63,22 @@ public class GameManager implements KeyListener {
     private int widthBulletPlayer = 15;
     private int heightBulletPlayer = 40;
     private double speedBulletPlayer = 15;
-    private Image imgBulletPlayer =  new ImageIcon("assets/images/bullet1.png").getImage();
+    private Image imgBulletPlayer = new ImageIcon(Objects.requireNonNull(getClass().getResource("/assets/images/bullet1.png"))).getImage();
     private boolean multiBulletPlayer = false;
 
-    //Bullet Enemy
+    // Bullet Enemy
     private ArrayList<Bullet> enemyBullets = new ArrayList<>();
     private int widthBulletEnemy = 20;
     private int heightBulletEnemy = 40;
     private double speedBulletEnemy = 5;
-    private Image imgBulletEnemy =  new ImageIcon("assets/images/bullet3.png").getImage();
+    private Image imgBulletEnemy = new ImageIcon(Objects.requireNonNull(getClass().getResource("/assets/images/bullet3.png"))).getImage();
 
     // Bullet Boss
-    //private ArrayList<EnemyBullet> bossBullets = new ArrayList<>();
     private ArrayList<Bullet> bossBullets = new ArrayList<>();
     private int widthBulletboss = 20;
     private int heightBulletboss = 20;
     private double speedBulletboss = 8;
-    private Image imgBulletHoming =  new ImageIcon("assets/images/bullet2.png").getImage();
+    private Image imgBulletHoming = new ImageIcon(Objects.requireNonNull(getClass().getResource("/assets/images/bullet2.png"))).getImage();
 
     // damage
     private int damagePlayer = 1;
