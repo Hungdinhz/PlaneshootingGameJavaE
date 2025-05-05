@@ -2,21 +2,39 @@ package entities;
 
 import base.Bullet;
 import base.Plane;
+import main.GameManager;
 
 import java.awt.*;
 
 public class Boss extends Plane {
+    private boolean moveRight;
 
     public Boss(double x, double y, int width, int height, double speed, Image image, int hp) {
         super(x, y, width, height, speed, image, hp);
     }
 
     private void move(double dx, double dy) {
+        setX(getX() + dx * getSpeed());
         setY(getY() + dy * getSpeed());
     }
 
     private void updateMovement(double delta) {
-        move(0, delta); // Di chuyển xuống
+        boolean check;
+        if(getY() > 10){
+            if(getX() < 0){
+                moveRight = true;
+            }
+            if(getX() + getWidth() > GameManager.getWidth()){
+                moveRight = false;
+            }
+            if(moveRight){
+                move(delta, 0);
+            }else{
+                move(-delta, 0);
+            }
+        }else {
+            move(0, delta); // Di chuyển xuống
+        }
     }
 
     @Override

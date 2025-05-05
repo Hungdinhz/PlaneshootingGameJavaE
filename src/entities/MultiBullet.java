@@ -21,10 +21,6 @@ public class MultiBullet {
         }
     }
 
-    public ArrayList<Bullet> getBullets() {
-        return bullets;
-    }
-
     public void update(double delta) {
         // Cập nhật tất cả viên đạn trong MultiBullet
         for(int i = 1; i < bullets.size(); i++){ ;
@@ -44,15 +40,7 @@ public class MultiBullet {
         }
     }
 
-    // Kiểm tra xem có viên đạn nào ra khỏi màn hình hay không
-    public void removeOutOfScreenBullets() {
-        for (int i = 0; i < bullets.size(); i++) {
-            Bullet bullet = bullets.get(i);
-            if (bullet.isOutOfScreen()) {
-                bullets.remove(i);
-                i--;
-            }
-        }
+    public ArrayList<Bullet> getBullets() {
+        return bullets;
     }
-
 }

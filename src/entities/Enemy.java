@@ -2,6 +2,8 @@ package entities;
 
 import base.Bullet;
 import base.Plane;
+import main.GameManager;
+
 import java.awt.*;
 
 public class Enemy extends Plane {
@@ -15,7 +17,12 @@ public class Enemy extends Plane {
     }
 
     private void updateMovement(double delta) {
-        move(0, delta); // Di chuyển xuống
+
+        if(getY() > GameManager.getHeight() / 3){
+            move(0, 0);
+        }else {
+            move(0, delta); // Di chuyển xuống
+        }
     }
 
     @Override

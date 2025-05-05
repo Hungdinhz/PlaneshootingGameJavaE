@@ -17,7 +17,7 @@ public class HomingBullet extends Bullet {
 
     public void update(Player player, double delta) {
         double px = player.getX();
-        double dx = (px - getX()) * delta;
+        double dx = px < getX()? -1.3 : 1.3;
 
         setX(getX() + dx);
         update(delta);
