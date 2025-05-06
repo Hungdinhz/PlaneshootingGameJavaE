@@ -19,7 +19,6 @@ public class Boss extends Plane {
     }
 
     private void updateMovement(double delta) {
-        boolean check;
         if(getY() > 10){
             if(getX() < 0){
                 moveRight = true;
@@ -48,11 +47,12 @@ public class Boss extends Plane {
     }
 
     public Bullet shootHoming(double x, double y, int widthB, int heightB, double speedB, Image imageB, int dame) {
-        return new HomingBullet(x, y, widthB, heightB, speedB, imageB, dame);
+        return new HomingBullet(x, y, widthB, heightB, speedB, imageB, dame, "enemy");
     }
 
     public Bullet shootNormal(double x, double y, int widthB, int heightB, double speedB, Image imageB, int dame) {
-        return new EnemyBullet(x, y, widthB, heightB, speedB, imageB, dame);
+        return new EnemyBullet(x, y, widthB, heightB, speedB, imageB, dame
+        );
     }
 
 }

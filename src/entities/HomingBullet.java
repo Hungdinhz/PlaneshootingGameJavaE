@@ -6,20 +6,23 @@ import java.awt.*;
 
 public class HomingBullet extends Bullet {
 
-    public HomingBullet(double x, double y, int width, int height, double speed, Image image, int damage) {
-        super(x, y, width, height, speed / 2, image, damage);  // Gọi constructor của Bullet với damage
+    public HomingBullet(double x, double y, int width, int height, double speed, Image image, int damage, String who) {
+        super(x, y, width, height, speed / 1.8, image, damage);
+        if(who.equals("enemy")){
+            setDy(1);
+        }else{
+            setDy(-1);
+        }
     }
 
     @Override
     public void update(double delta) {
-        setY(getY() + getSpeed());
+        move(delta);
     }
 
     public void update(Player player, double delta) {
         double px = player.getX();
-        double dx = px < getX()? -1.3 : 1.3;
-
-        setX(getX() + dx);
+        setDx(px < getX()? -100 : 100);
         update(delta);
     }
 
@@ -28,7 +31,4 @@ public class HomingBullet extends Bullet {
         g.drawImage(getImage(), (int) getX(), (int) getY(), getWidth(), getHeight(), null);
     }
 
-    public boolean isOutOfScreen() {
-        return getY() > GameManager.getHeight();
-    }
 }

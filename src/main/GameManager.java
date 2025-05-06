@@ -50,7 +50,7 @@ public class GameManager implements KeyListener {
     private Boss boss;
     private final int bossAppearThreshold = 5;
     private boolean bossAppeared = false;
-    private int bossWidth = WIDTH * 6 / 10;
+    private int bossWidth = WIDTH * 5 / 10;
     private int bossHeight = bossWidth * 8 / 10;
     private double bossX;
     private double bossY = -bossHeight;
@@ -62,7 +62,7 @@ public class GameManager implements KeyListener {
     private ArrayList<Bullet> playerBullets = new ArrayList<>();
     private int widthBulletPlayer = 15;
     private int heightBulletPlayer = 40;
-    private double speedBulletPlayer = 15;
+    private double speedBulletPlayer = 800;
     private Image imgBulletPlayer = new ImageIcon(Objects.requireNonNull(getClass().getResource("/assets/images/bullet1.png"))).getImage();
     private boolean multiBulletPlayer = false;
 
@@ -70,14 +70,14 @@ public class GameManager implements KeyListener {
     private ArrayList<Bullet> enemyBullets = new ArrayList<>();
     private int widthBulletEnemy = 20;
     private int heightBulletEnemy = 40;
-    private double speedBulletEnemy = 5;
+    private double speedBulletEnemy = 450;
     private Image imgBulletEnemy = new ImageIcon(Objects.requireNonNull(getClass().getResource("/assets/images/bullet3.png"))).getImage();
 
     // Bullet Boss
     private ArrayList<Bullet> bossBullets = new ArrayList<>();
     private int widthBulletboss = 20;
     private int heightBulletboss = 20;
-    private double speedBulletboss = 8;
+    private double speedBulletboss = 500;
     private Image imgBulletHoming = new ImageIcon(Objects.requireNonNull(getClass().getResource("/assets/images/bullet2.png"))).getImage();
 
     // damage
@@ -100,6 +100,9 @@ public class GameManager implements KeyListener {
 
     private double bulletTimerboss = 0;
     private double timePerShootBoss = 1;
+
+    private double mBTimerBoss = 0;
+    private double timePerShootMB = 5;
 
     // Count
     private int enemyKilledCount = 0;
@@ -238,7 +241,15 @@ public class GameManager implements KeyListener {
                 bulletTimerboss = 0;
                 bossBullets.add(boss.shootNormal(boss.getX() + boss.getWidth() / 2 - widthBulletboss / 2, boss.getY() + boss.getHeight(), widthBulletEnemy, heightBulletEnemy, speedBulletboss, imgBulletEnemy, damageBoss)); // dan o giua
                 bossBullets.add(boss.shootHoming(boss.getX() - widthBulletboss / 2, boss.getY() + boss.getHeight(), widthBulletboss, heightBulletboss, speedBulletboss, imgBulletHoming, damageBoss)); // dan ben trai
-                bossBullets.add(boss.shootHoming(boss.getX() + boss.getWidth() - widthBulletboss / 2, boss.getY() + boss.getHeight(), widthBulletboss, heightBulletboss, speedBulletboss, imgBulletHoming,damageBoss)); // dan ben phai
+                bossBullets.add(boss.shootHoming(boss.getX() + boss.getWidth() - widthBulletboss / 2, boss.getY() + boss.getHeight(), widthBulletboss, heightBulletboss, speedBulletboss, imgBulletHoming, damageBoss)); // dan ben phai
+            }
+
+            // boss ban nhieu dan
+            mBTimerBoss += delta;
+            if (mBTimerBoss >= timePerShootMB) {
+                MultiBullet mBBoss = new MultiBullet(boss.getX() + boss.getWidth() / 2 - widthBulletboss / 2, boss.getY() + boss.getHeight(), widthBulletEnemy, heightBulletEnemy, speedBulletboss / 2, imgBulletEnemy, damageBoss, 4, "enemy");
+                bossBullets.addAll(mBBoss.getBullets());
+                mBTimerBoss = 0;
             }
         }
 
@@ -425,8 +436,8 @@ public class GameManager implements KeyListener {
         player.keyPressed(e);
         if (e.getKeyCode() == KeyEvent.VK_SPACE && multiBulletPlayer) {
             // Bắn 3 viên đạn cùng lúc
-            MultiBullet multiBullet = new MultiBullet(player.getX(), player.getY(), widthBulletPlayer , heightBulletPlayer, speedBulletPlayer, imgBulletPlayer,  damagePlayer, 6);
-            playerBullets.addAll(multiBullet.getBullets());
+            MultiBullet mBPlayer = new MultiBullet(player.getX(), player.getY(), widthBulletPlayer , heightBulletPlayer, speedBulletPlayer, imgBulletPlayer,  damagePlayer, 6, "player");
+            playerBullets.addAll(mBPlayer.getBullets());
             multiBulletPlayer = false;
         }
         // Thêm reset game bằng phím R

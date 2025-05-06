@@ -7,21 +7,43 @@ import main.GameManager;
 import java.awt.*;
 
 public class Enemy extends Plane {
+    private boolean moveRight;
 
     public Enemy(double x, double y, int width, int height, double speed, Image image, int hp) {
         super(x, y, width, height, speed, image, hp);
     }
 
     private void move(double dx, double dy) {
+        setX(getX() + dx * getSpeed());
         setY(getY() + dy * getSpeed());
     }
 
     private void updateMovement(double delta) {
 
-        if(getY() > GameManager.getHeight() / 3){
-            move(0, 0);
+        if(getY() > (double) GameManager.getHeight() / 3){
+            if(getX() < 0){
+                moveRight = true;
+            }
+            if(getX() + getWidth() > GameManager.getWidth()){
+                moveRight = false;
+            }
+            if(moveRight){
+                move(delta, 0);
+            }else{
+                move(-delta, 0);
+            }
         }else {
-            move(0, delta); // Di chuyển xuống
+            if(getX() < 0){
+                moveRight = true;
+            }
+            if(getX() + getWidth() > GameManager.getWidth()){
+                moveRight = false;
+            }
+            if(moveRight){
+                move(delta, delta);
+            }else{
+                move(-delta, delta);
+            }
         }
     }
 
