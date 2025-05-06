@@ -18,7 +18,7 @@ public class GameManager implements KeyListener {
     public int score = 0;
     JLabel label;
 
-    private GamePanel gamePanel;
+    private final GamePanel gamePanel;
     private graphics.Background background;
 
     // Background
@@ -30,9 +30,9 @@ public class GameManager implements KeyListener {
     private Player player;
     private int playerWidth = 40;
     private int playerHeight = 46;
-    private double playerX = WIDTH / 2 - playerWidth / 2;
+    private double playerX = (double) WIDTH / 2 - (double) playerWidth / 2;
     private double playerY = HEIGHT - 100;
-    private Image imagePlayer = new ImageIcon(Objects.requireNonNull(getClass().getResource("/assets/images/plane1.png"))).getImage();
+    private final Image imagePlayer = new ImageIcon(Objects.requireNonNull(getClass().getResource("/assets/images/plane1.png"))).getImage();
     private double speedPlayer = 500;
     private int hpPlayer = 5;
 
@@ -42,19 +42,19 @@ public class GameManager implements KeyListener {
     private int enemyHeight = 60;
     private double enemyX;
     private double enemyY = 0;
-    private Image imageEnemy = new ImageIcon(Objects.requireNonNull(getClass().getResource("/assets/images/enemy1.png"))).getImage();
+    private final Image imageEnemy = new ImageIcon(Objects.requireNonNull(getClass().getResource("/assets/images/enemy1.png"))).getImage();
     private double speedEnemy = 35;
     private int hpEnemy = 3;
 
     // BOSS
     private Boss boss;
-    private final int bossAppearThreshold = 5;
+    private final int bossAppearThreshold = 10;
     private boolean bossAppeared = false;
     private int bossWidth = WIDTH * 5 / 10;
     private int bossHeight = bossWidth * 8 / 10;
     private double bossX;
-    private double bossY = -bossHeight;
-    private Image imageBoss = new ImageIcon(Objects.requireNonNull(getClass().getResource("/assets/images/enemy1.png"))).getImage(); // nên đổi hình nếu khác enemy thường
+    private double bossY = - bossHeight;
+    private final Image imageBoss = new ImageIcon(Objects.requireNonNull(getClass().getResource("/assets/images/enemy1.png"))).getImage(); // nên đổi hình nếu khác enemy thường
     private double speedBoss = 30;
     private int hpBoss = 100;
 
@@ -63,7 +63,7 @@ public class GameManager implements KeyListener {
     private int widthBulletPlayer = 15;
     private int heightBulletPlayer = 40;
     private double speedBulletPlayer = 800;
-    private Image imgBulletPlayer = new ImageIcon(Objects.requireNonNull(getClass().getResource("/assets/images/bullet1.png"))).getImage();
+    private final Image imgBulletPlayer = new ImageIcon(Objects.requireNonNull(getClass().getResource("/assets/images/bullet1.png"))).getImage();
     private boolean multiBulletPlayer = false;
 
     // Bullet Enemy
@@ -71,14 +71,14 @@ public class GameManager implements KeyListener {
     private int widthBulletEnemy = 20;
     private int heightBulletEnemy = 40;
     private double speedBulletEnemy = 450;
-    private Image imgBulletEnemy = new ImageIcon(Objects.requireNonNull(getClass().getResource("/assets/images/bullet3.png"))).getImage();
+    private final Image imgBulletEnemy = new ImageIcon(Objects.requireNonNull(getClass().getResource("/assets/images/bullet3.png"))).getImage();
 
     // Bullet Boss
     private ArrayList<Bullet> bossBullets = new ArrayList<>();
     private int widthBulletboss = 20;
     private int heightBulletboss = 20;
     private double speedBulletboss = 500;
-    private Image imgBulletHoming = new ImageIcon(Objects.requireNonNull(getClass().getResource("/assets/images/bullet2.png"))).getImage();
+    private final Image imgBulletHoming = new ImageIcon(Objects.requireNonNull(getClass().getResource("/assets/images/bullet2.png"))).getImage();
 
     // damage
     private int damagePlayer = 1;
@@ -92,7 +92,7 @@ public class GameManager implements KeyListener {
     private double mBTimerPlayer = 0;
     private double timePerShootM = 1;
 
-    private double timeCreateEnemy = 0.5;
+    private double timeCreateEnemy = 1;
     private double timerEnemy = 0;
 
     private double bulletTimerEnemy = 0;
@@ -128,7 +128,7 @@ public class GameManager implements KeyListener {
     }
 
     public void creatBoss(){
-        bossX = (WIDTH / 2) - (bossWidth / 2);
+        bossX = ((double) WIDTH / 2) - ((double) bossWidth / 2);
         boss = new Boss(bossX, bossY, bossWidth, bossHeight, speedBoss, imageBoss, hpBoss);
     }
 
@@ -140,8 +140,7 @@ public class GameManager implements KeyListener {
         player.draw(g);
 
         // draw enemy
-        for(int i = 0; i < enemys.size(); i++){
-            Enemy e = enemys.get(i);
+        for (Enemy e : enemys) {
             e.draw(g);
         }
 
@@ -174,7 +173,7 @@ public class GameManager implements KeyListener {
         } else if(checkWin){
             g.setColor(Color.red);
             g.setFont(new Font("Arial", Font.BOLD, 50));
-            g.drawString("YOU WINNN! SCORE = " + score, 0, HEIGHT / 2);
+            g.drawString("YOU WIN! SCORE = " + score, 0, HEIGHT / 2);
             g.setFont(new Font("Arial", Font.PLAIN, 25));
             g.drawString("Press R to Restart", 200, HEIGHT / 2 + 40);
         }else {
@@ -190,11 +189,12 @@ public class GameManager implements KeyListener {
         if(enemyKilledCount == bossAppearThreshold && !bossAppeared){
             creatBoss();
             bossAppeared = true;
+            timeCreateEnemy = 5;
         }
 
         // cap nhat vi tri dich
-        for(int i = 0; i < enemys.size(); i++){
-            enemys.get(i).update(delta);
+        for (Enemy enemy : enemys) {
+            enemy.update(delta);
         }
 
         // cap nhap vi tri boss
@@ -217,12 +217,10 @@ public class GameManager implements KeyListener {
         }
 
         // tao dich sau 1s
-        if(!bossAppeared) {
-            timerEnemy += delta;
-            if (timerEnemy >= timeCreateEnemy) {
-                timerEnemy = 0;
-                creatEnemy();
-            }
+        timerEnemy += delta;
+        if (timerEnemy >= timeCreateEnemy) {
+            timerEnemy = 0;
+            creatEnemy();
         }
 
         // enemys ban dan
@@ -239,15 +237,15 @@ public class GameManager implements KeyListener {
             bulletTimerboss += delta;
             if (bulletTimerboss >= timePerShootBoss) {
                 bulletTimerboss = 0;
-                bossBullets.add(boss.shootNormal(boss.getX() + boss.getWidth() / 2 - widthBulletboss / 2, boss.getY() + boss.getHeight(), widthBulletEnemy, heightBulletEnemy, speedBulletboss, imgBulletEnemy, damageBoss)); // dan o giua
-                bossBullets.add(boss.shootHoming(boss.getX() - widthBulletboss / 2, boss.getY() + boss.getHeight(), widthBulletboss, heightBulletboss, speedBulletboss, imgBulletHoming, damageBoss)); // dan ben trai
-                bossBullets.add(boss.shootHoming(boss.getX() + boss.getWidth() - widthBulletboss / 2, boss.getY() + boss.getHeight(), widthBulletboss, heightBulletboss, speedBulletboss, imgBulletHoming, damageBoss)); // dan ben phai
+                bossBullets.add(boss.shootNormal(boss.getX() + (double) boss.getWidth() / 2 - (double) widthBulletboss / 2, boss.getY() + boss.getHeight(), widthBulletEnemy, heightBulletEnemy, speedBulletboss, imgBulletEnemy, damageBoss)); // dan o giua
+                bossBullets.add(boss.shootHoming(boss.getX() - (double) widthBulletboss / 2, boss.getY() + boss.getHeight(), widthBulletboss, heightBulletboss, speedBulletboss, imgBulletHoming, damageBoss)); // dan ben trai
+                bossBullets.add(boss.shootHoming(boss.getX() + boss.getWidth() - (double) widthBulletboss / 2, boss.getY() + boss.getHeight(), widthBulletboss, heightBulletboss, speedBulletboss, imgBulletHoming, damageBoss)); // dan ben phai
             }
 
             // boss ban nhieu dan
             mBTimerBoss += delta;
             if (mBTimerBoss >= timePerShootMB) {
-                MultiBullet mBBoss = new MultiBullet(boss.getX() + boss.getWidth() / 2 - widthBulletboss / 2, boss.getY() + boss.getHeight(), widthBulletEnemy, heightBulletEnemy, speedBulletboss / 2, imgBulletEnemy, damageBoss, 4, "enemy");
+                MultiBullet mBBoss = new MultiBullet(boss.getX() + (double) boss.getWidth() / 2 - (double) widthBulletboss / 2, boss.getY() + boss.getHeight(), widthBulletEnemy, heightBulletEnemy, speedBulletboss / 2, imgBulletEnemy, damageBoss, 4, "enemy");
                 bossBullets.addAll(mBBoss.getBullets());
                 mBTimerBoss = 0;
             }
