@@ -5,7 +5,7 @@ import java.util.Objects;
 import javax.swing.*;
 
 public class Background {
-    private Image backgroundImage;
+    private final Image backgroundImage;
 
     public Background(String imagePath) {
         backgroundImage = new ImageIcon(Objects.requireNonNull(getClass().getResource(imagePath))).getImage();

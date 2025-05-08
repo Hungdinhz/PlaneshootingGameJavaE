@@ -2,7 +2,6 @@ package entities;
 
 import base.Bullet;
 
-import javax.swing.*;
 import java.awt.*;
 
 public class PlayerBullet extends Bullet {

@@ -2,6 +2,8 @@ package entities;
 
 import base.Bullet;
 import base.Plane;
+import main.GameManager;
+
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
@@ -13,8 +15,20 @@ public class Player extends Plane {
     }
 
     private void move(double dx, double dy) {
-        setX(getX() + dx * getSpeed());
-        setY(getY() + dy * getSpeed());
+        double newX = getX() + dx * getSpeed();
+        double newY = getY() + dy * getSpeed();
+
+        // Giới hạn trong màn hình
+        if (newX < 0) newX = 0;
+        if (newX + getWidth() > GameManager.getWidth())
+            newX = GameManager.getWidth() - getWidth();
+
+        if (newY < 0) newY = 0;
+        if (newY + getHeight() > GameManager.getHeight())
+            newY = GameManager.getHeight() - getHeight();
+
+        setX(newX);
+        setY(newY);
     }
 
     private void updateMovement(double delta) {
@@ -39,6 +53,11 @@ public class Player extends Plane {
 
     public Bullet shoot(int widthB, int heightB, double speedB, Image imageB, int dame) {
         return new PlayerBullet(getX() + (double) getWidth() / 2 - 5, getY(), widthB, heightB, speedB, imageB, dame);
+    }
+
+    public boolean isOutOfScreen() {
+        return getX() < 0 || getX() + getWidth() > GameManager.getWidth()
+                || getY() < 0 || getY() + getHeight() > GameManager.getHeight();
     }
 
     public void keyPressed(KeyEvent e) {

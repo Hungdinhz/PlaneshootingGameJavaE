@@ -4,6 +4,8 @@ package main;
     Vẽ nền, máy bay địch, máy bay người chơi, đạn bắn ra
  */
 
+import sound.SoundManager;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -11,20 +13,20 @@ public class GamePanel extends JPanel implements Runnable{
     //Game loop
     private Thread gameThread;
 
-    // Man hinh
-    private JFrame frame;
-    private GameManager gm;
+    private final GameManager gm;
 
     public GamePanel(GameManager gm){
         this.gm = gm;
     }
 
     public void init() {
+        //SoundManager.playBackgroundMusic("assets/sounds/SoundBackground.wav");
         gm.createObject();
 
-        frame = new JFrame("Air Force 1");
+        // Man hinh
+        JFrame frame = new JFrame("Air Force 1");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(gm.getWidth(), gm.getHeight());
+        frame.setSize(GameManager.getWidth(), GameManager.getHeight());
         frame.add(this);
         frame.setVisible(true);
 

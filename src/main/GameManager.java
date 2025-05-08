@@ -54,7 +54,7 @@ public class GameManager implements KeyListener {
     private int bossHeight = bossWidth * 8 / 10;
     private double bossX;
     private double bossY = - bossHeight;
-    private final Image imageBoss = new ImageIcon(Objects.requireNonNull(getClass().getResource("/assets/images/enemy1.png"))).getImage(); // nên đổi hình nếu khác enemy thường
+    private final Image imageBoss = new ImageIcon(Objects.requireNonNull(getClass().getResource("/assets/images/boss.png"))).getImage(); // nên đổi hình nếu khác enemy thường
     private double speedBoss = 30;
     private int hpBoss = 100;
 
@@ -63,6 +63,7 @@ public class GameManager implements KeyListener {
     private int widthBulletPlayer = 15;
     private int heightBulletPlayer = 40;
     private double speedBulletPlayer = 800;
+    private  double oriSpeedBulletPlayer = speedBulletPlayer;
     private final Image imgBulletPlayer = new ImageIcon(Objects.requireNonNull(getClass().getResource("/assets/images/bullet1.png"))).getImage();
     private boolean multiBulletPlayer = false;
 
@@ -92,7 +93,7 @@ public class GameManager implements KeyListener {
     private double mBTimerPlayer = 0;
     private double timePerShootM = 1;
 
-    private double timeCreateEnemy = 1;
+    private double timeCreateEnemy = 0.5;
     private double timerEnemy = 0;
 
     private double bulletTimerEnemy = 0;
@@ -185,6 +186,13 @@ public class GameManager implements KeyListener {
 
     public void update(double delta) {
         checkCollisions();
+
+     /*   if(player.isTakeDame()){
+            player.setSpeed(player.getSpeed() * 1.5);
+            speedBulletPlayer *= 1.5;
+            player.setTakeDame(false);
+        }*/
+
         player.update(delta);
         if(enemyKilledCount == bossAppearThreshold && !bossAppeared){
             creatBoss();
@@ -311,6 +319,7 @@ public class GameManager implements KeyListener {
                 Enemy e = enemyIterator.next();
                 if (playerBullet.getBounds().intersects(e.getBounds())) {
                     e.takeDamage(playerBullet.getDamage()); // Gây sát thương cho kẻ địch
+
                     bulletPlayer.remove(); // Xóa viên đạn an toàn
 
                     if (e.isDead()) { // Nếu kẻ địch chết
@@ -409,6 +418,8 @@ public class GameManager implements KeyListener {
         player.setX(playerX);
         player.setY(playerY);
         player.setHp(hpPlayer);
+        player.setSpeed(speedPlayer);
+        speedBulletPlayer = oriSpeedBulletPlayer;
 
         // Clear mọi đối tượng
         enemys.clear();
@@ -426,6 +437,7 @@ public class GameManager implements KeyListener {
         timerEnemy = 0;
         bulletTimerEnemy = 0;
         bulletTimerboss = 0;
+        timeCreateEnemy = 0.5;
     }
 
 

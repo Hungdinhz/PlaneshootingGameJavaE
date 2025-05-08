@@ -2,9 +2,7 @@ package entities;
 
 import base.Bullet;
 
-import javax.swing.*;
 import java.awt.*;
-import main.GameManager;
 
 public class EnemyBullet extends Bullet {
     public EnemyBullet(double x, double y, int width, int height, double speed, Image image, int dame) {

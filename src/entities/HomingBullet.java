@@ -1,7 +1,6 @@
 package entities;
 
 import base.Bullet;
-import main.GameManager;
 import java.awt.*;
 
 public class HomingBullet extends Bullet {
