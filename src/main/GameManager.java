@@ -15,6 +15,7 @@ public class GameManager implements KeyListener {
 
     private boolean checkWin = false;
     private boolean gameOver = false;
+    private boolean isPaused = false;
     public int score = 0;
     JLabel label;
 
@@ -164,6 +165,11 @@ public class GameManager implements KeyListener {
         for (Bullet enemyBullet : enemyBullets) {
             enemyBullet.draw(g);
         }
+        if (isPaused) {
+            g.setColor(Color.RED);
+            g.setFont(new Font("Arial", Font.BOLD, 36));
+            g.drawString("PAUSED", WIDTH / 2 - 100, HEIGHT / 2 - 100); // Tùy chỉnh vị trí
+        }
 
         if(gameOver){
             g.setColor(Color.red);
@@ -187,8 +193,8 @@ public class GameManager implements KeyListener {
     }
 
     public void update(double delta) {
+        if (isPaused) return; // Dừng cập nhật nếu game bị tạm dừng
         checkCollisions();
-
      /*   if(player.isTakeDame()){
             player.setSpeed(player.getSpeed() * 1.5);
             speedBulletPlayer *= 1.5;
@@ -468,6 +474,10 @@ public class GameManager implements KeyListener {
             resetGame();
            //start();
         }
+
+        if (e.getKeyCode() == KeyEvent.VK_P) {
+           setPaused(!isPaused());
+        }
     }
 
     @Override
@@ -509,5 +519,13 @@ public class GameManager implements KeyListener {
 
     public void setPlayer(Player player) {
         this.player = player;
+    }
+
+    public boolean isPaused() {
+        return isPaused;
+    }
+
+    public void setPaused(boolean paused) {
+        isPaused = paused;
     }
 }
