@@ -1,6 +1,8 @@
 package entities;
 
 import base.Bullet;
+import base.EntityGame;
+
 import java.awt.*;
 
 public class HomingBullet extends Bullet {
@@ -19,11 +21,12 @@ public class HomingBullet extends Bullet {
         move(delta);
     }
 
-    public void update(Player player, double delta) {
-        double px = player.getX();
-        setDx(px < getX()? -100 : 100);
-        update(delta);
+    public void update(EntityGame target, double delta) {
+        double targetX = target.getX();
+        setDx(getX() < targetX ? 100 : -100);
+        move(delta);
     }
+
 
     @Override
     public void draw(Graphics g) {

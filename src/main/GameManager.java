@@ -91,7 +91,7 @@ public class GameManager implements KeyListener {
     private double timePerShoot = 0.3;
 
     private double mBTimerPlayer = 0;
-    private double timePerShootM = 1;
+    private double timePerShootM = 0.75;
 
     private double timeCreateEnemy = 0.5;
     private double timerEnemy = 0;
@@ -180,7 +180,9 @@ public class GameManager implements KeyListener {
         }else {
             g.setColor(Color.RED);
             g.setFont(new Font("Arial", Font.BOLD, 20));
-            g.drawString("Score: " + score, 20, 30);
+            g.drawString("Hp: " + player.getHp(), 20, 30);
+            g.setFont(new Font("Arial", Font.BOLD, 20));
+            g.drawString("Score: " + score, 20, 60);
         }
     }
 
@@ -261,8 +263,19 @@ public class GameManager implements KeyListener {
 
         // delete bullet khi dna ra khoi man hinh
         for (int i = 0; i < playerBullets.size(); i++) {
-            playerBullets.get(i).update(delta);
-            if (playerBullets.get(i).isOutOfScreen()) {
+            Bullet bullet = playerBullets.get(i);
+            if (bullet instanceof HomingBullet homingBullet) {
+                if (!enemys.isEmpty()) {
+                    homingBullet.update(enemys.getFirst(), delta);
+                }else {
+                    homingBullet.update(delta);
+                }
+            } else {
+                // Đối với các loại đạn khác, gọi phương thức update chung
+                bullet.update(delta);
+            }
+
+            if (bullet.isOutOfScreen()) {
                 playerBullets.remove(i);
                 i--;
             }
